@@ -1,0 +1,69 @@
+architecture harward32 {
+
+	/*
+		Variant requirements:
+		  - typing: static (должны знать тип заранее для каждой переменной)
+		  - instruction format: двухадресная (2 операнда)
+		  - memory banks: code, data
+	*/
+
+	registers:
+
+		storage ip [32];       // instruction pointer (byte address in CODE space)
+		storage sp [32];       // stack pointer (byte address in STACK space, grows down)
+		storage bp [32];       // base/frame pointer for call frames (in STACK space)
+
+		
+
+	memory:
+
+		range code [0x0000 .. 0xffff] {
+			cell = 8;
+			endianess = little-endian;
+			granularity = 1;
+		}
+
+		range dataMem [0x0000 .. 0xffff] {
+			cell = 8;
+			endianess = little-endian;
+			granularity = 1;
+		}
+
+		range stackMem [0x0000 .. 0xffff] {
+			cell = 8;
+			endianess = little-endian;
+			granularity = 1;
+		}
+
+	instructions:
+
+	mnemonics:
+
+		format plain0 is "";
+		format plain1 is "{1}";
+
+		mnemonic jmp(target) plain1;
+		mnemonic j(target) plain1;
+		mnemonic jnz(target) plain1;
+		mnemonic call(target) plain1;
+		mnemonic ret() plain0;
+
+		mnemonic ldsp(value) plain1;
+		mnemonic ldbp(value) plain1;
+
+		mnemonic load() plain0;
+		mnemonic store() plain0;
+
+		mnemonic add() plain0;
+		mnemonic sub() plain0;
+		mnemonic mul() plain0;
+		mnemonic div() plain0;
+		mnemonic mod() plain0;
+
+		mnemonic eq() plain0;
+		mnemonic neq() plain0;
+		mnemonic lt() plain0;
+		mnemonic gt() plain0;
+		mnemonic le() plain0;
+		mnemonic ge() plain0;
+}
