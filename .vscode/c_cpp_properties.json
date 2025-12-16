@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/boost/**",
+                "${workspaceFolder}/parser",       // сгенерированные парсер/лексер
+                "${workspaceFolder}/visitor",         // твой AST Visitor
+                "/usr/local/include",                 // если antlr4 установлена через make install
+                "/usr/include",                       // системные заголовки
+                "/home/artem/antlr4/runtime",
+                "/home/artem/antlr4/runtime/src"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

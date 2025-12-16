@@ -1,0 +1,11 @@
+digraph CallGraph {
+  rankdir=LR;
+  node [shape=box, fontname="Courier"];
+
+  "popa";
+  "main";
+
+  // edges
+  "main" -> "jopa";
+  "main" -> "popa";
+}

@@ -1,0 +1,28 @@
+digraph popa {
+  rankdir=TB;
+  node [fontname="Courier"];
+
+  n102202095623184 [shape=ellipse, label="entry\n--- vars ---\ny : int\nflag : bool\nx : int"];
+  n102202095623408 [shape=ellipse, label="exit"];
+  n102202095624032 [shape=box, label="block\nAssignExpr(x, 10)\nAssignExpr(y, 20)\nAssignExpr(flag, true)"];
+  n102202095624544 [shape=diamond, label="if\n[CompareExpr(x, y)]"];
+  n102202095624832 [shape=box, label="then\nAssignExpr(x, AddSubExpr(x, y))"];
+  n102202095625168 [shape=box, label="else\nAssignExpr(x, AddSubExpr(MulDivExpr(x, y), 3, 4))"];
+  n102202095625552 [shape=circle, label="merge"];
+  n102202095625904 [shape=hexagon, label="repeat\n[CompareExpr(y, 0)]"];
+  n102202095627232 [shape=box, label="repeat_body\nAssignExpr(y, AddSubExpr(y, 1))"];
+  n102202095627760 [shape=hexagon, label="repeat_exit"];
+
+  // Successor edges
+  n102202095623184 -> n102202095624032;
+  n102202095624032 -> n102202095624544;
+  n102202095624544 -> n102202095624832 [label="true"];
+  n102202095624544 -> n102202095625168 [label="false"];
+  n102202095624832 -> n102202095625552;
+  n102202095625168 -> n102202095625552;
+  n102202095625552 -> n102202095625904;
+  n102202095625904 -> n102202095627232 [label="body", style="dashed"];
+  n102202095625904 -> n102202095627760 [label="exit", style="dotted"];
+  n102202095627232 -> n102202095625904;
+  n102202095627760 -> n102202095623408;
+}
