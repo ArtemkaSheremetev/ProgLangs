@@ -177,16 +177,27 @@ std::any HelloASTVisitor::visitCallExpr(HelloParser::CallExprContext *context) {
 }
 
 
-std::any HelloASTVisitor::visitCompareExpr(HelloParser::CompareExprContext *context) {
-    if (context->addSubExpr().size() == 1)
-        return visit(context->addSubExpr(0));
+std::any HelloASTVisitor::visitCompareExpr(HelloParser::CompareExprContext *ctx) {
+    // первый операнд
+    auto left = std::any_cast<ASTNodePtr>(visit(ctx->addSubExpr(0)));
 
-    auto node = std::make_shared<ASTNode>("CompareExpr");
-    for (auto child : context->addSubExpr()) {
-        node->addChild(std::any_cast<ASTNodePtr>(visit(child)));
+    // дальше цепочка (op rhs)
+    for (size_t i = 1; i < ctx->addSubExpr().size(); ++i) {
+        // оператор между operands (>, <, ==, != и т.д.)
+        std::string op = ctx->children[2*i - 1]->getText();
+
+        auto right = std::any_cast<ASTNodePtr>(visit(ctx->addSubExpr(i)));
+
+        auto bin = std::make_shared<ASTNode>("CompareExpr", op);
+        bin->addChild(left);
+        bin->addChild(right);
+
+        left = bin; // "сдвигаем" левый узел для следующей итерации
     }
-    return node;
+
+    return left;
 }
+
 
 std::any HelloASTVisitor::visitAddSubExpr(HelloParser::AddSubExprContext *ctx) {
     // первый операнд
@@ -210,16 +221,24 @@ std::any HelloASTVisitor::visitAddSubExpr(HelloParser::AddSubExprContext *ctx) {
 }
 
 
-std::any HelloASTVisitor::visitMulDivExpr(HelloParser::MulDivExprContext *context) {
-    if (context->unaryExpr().size() == 1)
-        return visit(context->unaryExpr(0));
+std::any HelloASTVisitor::visitMulDivExpr(HelloParser::MulDivExprContext *ctx) {
+    auto left = std::any_cast<ASTNodePtr>(visit(ctx->unaryExpr(0)));
 
-    auto node = std::make_shared<ASTNode>("MulDivExpr");
-    for (auto child : context->unaryExpr()) {
-        node->addChild(std::any_cast<ASTNodePtr>(visit(child)));
+    for (size_t i = 1; i < ctx->unaryExpr().size(); ++i) {
+        std::string op = ctx->children[2*i - 1]->getText(); // *, /, %
+
+        auto right = std::any_cast<ASTNodePtr>(visit(ctx->unaryExpr(i)));
+
+        auto bin = std::make_shared<ASTNode>("BinaryExpr", op);
+        bin->addChild(left);
+        bin->addChild(right);
+
+        left = bin;
     }
-    return node;
+
+    return left;
 }
+
 
 std::any HelloASTVisitor::visitUnaryExpr(HelloParser::UnaryExprContext *context) {
     if (context->unaryExpr()) {

@@ -27,7 +27,7 @@ Source
                 │   ├── Identifier : flag
                 │   └── Literal : true
                 ├── IfStatement
-                │   ├── CompareExpr
+                │   ├── CompareExpr : <
                 │   │   ├── Identifier : x
                 │   │   └── Identifier : y
                 │   ├── CallExpr
@@ -57,6 +57,6 @@ Source
                 │           │       ├── Literal : 8
                 │           │       └── Literal : 2
                 │           └── Identifier : y
-                └── CompareExpr
+                └── CompareExpr : ==
                     ├── Identifier : y
                     └── Literal : 0
