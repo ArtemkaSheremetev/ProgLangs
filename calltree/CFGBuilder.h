@@ -13,7 +13,7 @@ struct CFGBuilder {
     OpGraph* graph;     // текущий граф функции
     CFGNode* current;  // текущая точка потока управления
     CallGraph* callGraph;
-
+    
     explicit CFGBuilder(OpGraph* g, CallGraph* cg);
 
     // Точка входа — тело функции (Body)
@@ -23,13 +23,14 @@ struct CFGBuilder {
     CFGNode* visitStatement(ASTNode* stmt);
     CFGNode* visitBlock(ASTNode* block);
     CFGNode* visitCall(ASTNode* node);
+    CFGNode* emitExprNode(ASTNode* node);
     void visitVars(ASTNode* vars);
 
 private:
     // Специализированные конструкции
     CFGNode* visitIf(ASTNode* stmt);
     CFGNode* visitWhile(ASTNode* stmt);
-    CFGNode* visitDo(ASTNode* stmt);
+    CFGNode* visitDo(ASTNode* stmt, ASTNode* condNode);
     // Утилиты
     std::string exprToString(ASTNode* expr);
 };

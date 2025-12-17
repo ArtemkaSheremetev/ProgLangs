@@ -188,16 +188,27 @@ std::any HelloASTVisitor::visitCompareExpr(HelloParser::CompareExprContext *cont
     return node;
 }
 
-std::any HelloASTVisitor::visitAddSubExpr(HelloParser::AddSubExprContext *context) {
-    if (context->mulDivExpr().size() == 1)
-        return visit(context->mulDivExpr(0));
+std::any HelloASTVisitor::visitAddSubExpr(HelloParser::AddSubExprContext *ctx) {
+    // первый операнд
+    auto left = std::any_cast<ASTNodePtr>(visit(ctx->mulDivExpr(0)));
 
-    auto node = std::make_shared<ASTNode>("AddSubExpr");
-    for (auto child : context->mulDivExpr()) {
-        node->addChild(std::any_cast<ASTNodePtr>(visit(child)));
+    // дальше цепочка (op rhs)
+    for (size_t i = 1; i < ctx->mulDivExpr().size(); ++i) {
+        // оператор между operands
+        std::string op = ctx->children[2*i - 1]->getText(); // + или -
+
+        auto right = std::any_cast<ASTNodePtr>(visit(ctx->mulDivExpr(i)));
+
+        auto bin = std::make_shared<ASTNode>("BinaryExpr", op);
+        bin->addChild(left);
+        bin->addChild(right);
+
+        left = bin;
     }
-    return node;
+
+    return left;
 }
+
 
 std::any HelloASTVisitor::visitMulDivExpr(HelloParser::MulDivExprContext *context) {
     if (context->unaryExpr().size() == 1)

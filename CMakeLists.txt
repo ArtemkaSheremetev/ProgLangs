@@ -55,3 +55,26 @@ dl
 if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 target_compile_options(ProgLangLab1 PRIVATE -Wall -Wextra -Wpedantic)
 endif()
+
+find_program(DOT_EXECUTABLE dot)
+
+if(DOT_EXECUTABLE)
+    # Проверить существование скрипта
+    if(EXISTS ${CMAKE_SOURCE_DIR}/dot_to_png.sh)
+        # Сделать скрипт исполняемым
+        file(COPY ${CMAKE_SOURCE_DIR}/dot_to_png.sh
+             DESTINATION ${CMAKE_BINARY_DIR}
+             FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+        
+        # Добавить post-build команду
+        add_custom_command(TARGET ProgLangLab1 POST_BUILD
+            COMMAND bash ${CMAKE_BINARY_DIR}/dot_to_png.sh
+            COMMENT "Converting DOT files to PNG"
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        )
+    else()
+        message(WARNING "dot_to_png.sh not found in ${CMAKE_SOURCE_DIR}")
+    endif()
+else()
+    message(WARNING "Graphviz dot not found. Install with: sudo apt install graphviz")
+endif()

@@ -10,6 +10,28 @@
 
 using namespace std;
 
+enum class IROp {
+    LOAD,
+    STORE,
+    ADD,
+    SUB,
+    MUL,
+    DIV,
+    CMP,
+    JMP,
+    JCC,
+    CALL,
+    RET
+};
+
+struct IRInstr {
+    IROp op;
+    string dst;
+    string src1;
+    string src2;
+};
+
+
 enum class NodeType {
     ENTRY,          // Вход в функцию
     EXIT,           // Выход (неявный, когда поток доходит до конца)
@@ -36,7 +58,8 @@ typedef enum{
 struct CFGNode {
     NodeType type;
     string label;    
-    string value;      
+    string value;
+    vector<IRInstr> ir;      
     
     // Данные для разных типов узлов
     string condition;          // Условие для ветвления/цикла

@@ -1,4 +1,4 @@
-// Тестовая программа для языка Hello
+// Тестовая программа для языка Hello. Исправленная версия
 method main() : int
 var x, y : int;
 var flag : bool;
@@ -10,27 +10,10 @@ begin
     if x < y then
         popa();
     else
-        jopa();
-
+        banana();
+    popa();
     repeat
-        y := y - 1;
-    until y == 0;
-end;
-
-method popa() : int
-var x, y : int;
-var flag : bool;
-begin
-    x := 10;
-    y := 20;
-    flag := true;
-
-    if x < y then
-        x := x + y;
-    else
-        x := x * y - 3 + 4;
-        
-    repeat
-        y := y - 1;
+        y := y - 1 * 2 / x;
+        x := 1 + 3 + 8 / 2 - y;
     until y == 0;
 end;

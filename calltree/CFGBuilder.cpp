@@ -8,7 +8,7 @@ using namespace std;
 CFGBuilder::CFGBuilder(OpGraph* g, CallGraph* cg)
     : graph(g), callGraph(cg), current(g->entry) {}
 
-    
+
 // ========================================================
 // ENTRY
 // ========================================================
@@ -30,6 +30,7 @@ void CFGBuilder::build(ASTNode* body) {
     }
 }
 
+
 // ========================================================
 // STATEMENT BLOCK
 // ========================================================
@@ -39,11 +40,29 @@ CFGNode* CFGBuilder::visitBlock(ASTNode* node) {
     current->add_successor(block);
     current = block;
 
-    for (auto& stmt : node->children) {
-        visitStatement(stmt.get());
+    for (size_t i = 0; i < node->children.size(); ++i) {
+        ASTNode* stmt = node->children[i].get();
+
+        if (stmt->name == "DoStatement") {
+            ASTNode* cond = nullptr;
+
+            // Проверяем, идёт ли сразу CompareExpr после DoStatement
+            if (i + 1 < node->children.size() &&
+                node->children[i + 1]->name == "CompareExpr") {
+                cond = node->children[i + 1].get();
+                i++; // пропускаем CompareExpr в основном цикле
+            }
+
+            visitDo(stmt, cond);
+            continue;
+        }
+
+        visitStatement(stmt);
     }
+
     return current;
 }
+
 
 // ========================================================
 // VARIABLES
@@ -58,7 +77,7 @@ void CFGBuilder::visitVars(ASTNode* node) {
             names.push_back(ch->value);
         }
         else if (ch->name == "TypeRef") {
-            type = ParseType(ch->children[0]->value); // возвращает types_t
+            type = ParseType(ch->children[0]->value); 
         }
     }
 
@@ -73,6 +92,8 @@ void CFGBuilder::visitVars(ASTNode* node) {
 // ========================================================
 
 CFGNode* CFGBuilder::visitStatement(ASTNode* node) {
+    if (!node) return current;
+
     if (node->name == "IfStatement")
         return visitIf(node);
 
@@ -80,34 +101,36 @@ CFGNode* CFGBuilder::visitStatement(ASTNode* node) {
         return visitWhile(node);
 
     if (node->name == "DoStatement")
-        return visitDo(node);
+        return visitDo(node, nullptr);
 
     if (node->name == "StatementBlock")
         return visitBlock(node);
 
-    // ⬇⬇⬇ ВАЖНО ⬇⬇⬇
     if (node->name == "CallExpr")
         return visitCall(node);
 
-    current->add_statement(exprToString(node));
+    // Обычное выражение/присваивание
+    CFGNode* stmt = graph->create_node(NodeType::BASIC_BLOCK, "stmt");
+    stmt->add_statement(exprToString(node));
+
+    current->add_successor(stmt);
+    current = stmt;
+
     return current;
 }
 
 
 // ========================================================
-// IF
+// CALL
 // ========================================================
 
 CFGNode* CFGBuilder::visitCall(ASTNode* node) {
-    // children[0] = Identifier
     std::string callee = node->children[0]->value;
     std::string caller = graph->function_name;
 
-    // 1. CFG node
     CFGNode* call = graph->create_node(NodeType::CALL, "call");
     call->label = "call " + callee;
 
-    // аргументы
     if (node->children.size() > 1) {
         for (auto& arg : node->children[1]->children) {
             call->statements.push_back(exprToString(arg.get()));
@@ -117,7 +140,6 @@ CFGNode* CFGBuilder::visitCall(ASTNode* node) {
     current->add_successor(call);
     current = call;
 
-    // 2. CallGraph edge
     if (callGraph) {
         callGraph->add_call(caller, callee);
     }
@@ -126,15 +148,16 @@ CFGNode* CFGBuilder::visitCall(ASTNode* node) {
 }
 
 
+// ========================================================
+// IF
+// ========================================================
 
 CFGNode* CFGBuilder::visitIf(ASTNode* node) {
-    // children: [cond, then, else?]
     CFGNode* cond = graph->create_node(NodeType::CONDITION, "if");
     cond->condition = exprToString(node->children[0].get());
 
     current->add_successor(cond);
 
-    // THEN
     CFGNode* thenBlock = graph->create_node(NodeType::BASIC_BLOCK, "then");
     cond->true_branch = thenBlock;
     cond->add_successor(thenBlock);
@@ -142,7 +165,6 @@ CFGNode* CFGBuilder::visitIf(ASTNode* node) {
     current = thenBlock;
     CFGNode* thenEnd = visitStatement(node->children[1].get());
 
-    // ELSE
     CFGNode* elseEnd = nullptr;
     if (node->children.size() > 2) {
         CFGNode* elseBlock = graph->create_node(NodeType::BASIC_BLOCK, "else");
@@ -153,7 +175,6 @@ CFGNode* CFGBuilder::visitIf(ASTNode* node) {
         elseEnd = visitStatement(node->children[2].get());
     }
 
-    // MERGE
     CFGNode* merge = graph->create_node(NodeType::MERGE, "merge");
     thenEnd->add_successor(merge);
 
@@ -166,18 +187,17 @@ CFGNode* CFGBuilder::visitIf(ASTNode* node) {
     return current;
 }
 
+
 // ========================================================
 // WHILE
 // ========================================================
 
 CFGNode* CFGBuilder::visitWhile(ASTNode* node) {
-    // children: [cond, body]
     CFGNode* header = graph->create_node(NodeType::LOOP_HEADER, "while");
     header->condition = exprToString(node->children[0].get());
 
     current->add_successor(header);
 
-    // BODY
     CFGNode* body = graph->create_node(NodeType::LOOP_BODY, "while_body");
     header->loop_body = body;
     header->add_successor(body);
@@ -186,7 +206,6 @@ CFGNode* CFGBuilder::visitWhile(ASTNode* node) {
     CFGNode* bodyEnd = visitStatement(node->children[1].get());
     bodyEnd->add_successor(header);
 
-    // EXIT
     CFGNode* exit = graph->create_node(NodeType::LOOP_EXIT, "while_exit");
     header->loop_exit = exit;
     header->add_successor(exit);
@@ -195,28 +214,34 @@ CFGNode* CFGBuilder::visitWhile(ASTNode* node) {
     return current;
 }
 
+
 // ========================================================
 // DO / REPEAT
 // ========================================================
 
-CFGNode* CFGBuilder::visitDo(ASTNode* node) {
-    // children: [body, cond]
+CFGNode* CFGBuilder::visitDo(ASTNode* node, ASTNode* condNode) {
     CFGNode* header = graph->create_node(NodeType::LOOP_HEADER, "repeat");
-    header->condition = exprToString(node->children[1].get());
-    header->is_until = (node->value == "until");
+
+    if (condNode)
+        header->condition = exprToString(condNode);
+
+    header->is_until = true;
 
     current->add_successor(header);
 
-    // BODY
     CFGNode* body = graph->create_node(NodeType::LOOP_BODY, "repeat_body");
     header->loop_body = body;
     header->add_successor(body);
 
     current = body;
-    CFGNode* bodyEnd = visitStatement(node->children[0].get());
-    bodyEnd->add_successor(header);
 
-    // EXIT
+    CFGNode* last = body;
+    for (auto& child : node->children) {
+        last = visitStatement(child.get());
+    }
+
+    last->add_successor(header);
+
     CFGNode* exit = graph->create_node(NodeType::LOOP_EXIT, "repeat_exit");
     header->loop_exit = exit;
     header->add_successor(exit);
@@ -225,6 +250,7 @@ CFGNode* CFGBuilder::visitDo(ASTNode* node) {
     return current;
 }
 
+
 // ========================================================
 // EXPRESSION TO STRING
 // ========================================================
@@ -232,35 +258,41 @@ CFGNode* CFGBuilder::visitDo(ASTNode* node) {
 string CFGBuilder::exprToString(ASTNode* node) {
     if (!node) return "";
 
+    if (node->name == "AssignExpr") {
+        std::string lhs = exprToString(node->children[0].get());
+        std::string rhs = exprToString(node->children[1].get());
+        return lhs + " := " + rhs;
+    }
+
+    if (node->name == "BinaryExpr") {
+        std::string left  = exprToString(node->children[0].get());
+        std::string right = exprToString(node->children[1].get());
+        return "(" + left + " " + node->value + " " + right + ")";
+    }
+
+    if (node->name == "CompareExpr") {
+        string left  = exprToString(node->children[0].get());
+        string right = exprToString(node->children[1].get());
+        return "(" + left + " " + node->value + " " + right + ")";
+    }
+
+    if (node->name == "Literal" || node->name == "Identifier") {
+        return node->value;
+    }
+
     if (node->name == "CallExpr") {
-        std::stringstream ss;
-        ss << node->children[0]->value << "(";
+        std::string callee = node->children[0]->value;
+        std::string args;
         if (node->children.size() > 1) {
-            auto& args = node->children[1]->children;
-            for (size_t i = 0; i < args.size(); ++i) {
-                ss << exprToString(args[i].get());
-                if (i + 1 < args.size()) ss << ", ";
+            for (size_t i = 0; i < node->children[1]->children.size(); ++i) {
+                args += exprToString(node->children[1]->children[i].get());
+                if (i + 1 < node->children[1]->children.size()) args += ", ";
             }
         }
-        ss << ")";
-        return ss.str();
+        return callee + "(" + args + ")";
     }
 
-    if (!node->value.empty())
-        return node->value;
-
-    if (node->children.empty())
-        return node->name;
-
-    stringstream ss;
-    ss << node->name << "(";
-    for (size_t i = 0; i < node->children.size(); ++i) {
-        ss << exprToString(node->children[i].get());
-        if (i + 1 < node->children.size())
-            ss << ", ";
-    }
-    ss << ")";
-    return ss.str();
+    return node->name;
 }
 
 

@@ -1,51 +1,7 @@
 Source
-    ├── FuncDef
-    │   ├── FuncSignature
-    │   │   ├── Identifier : main
-    │   │   └── TypeRef
-    │   │       └── BuiltinType : int
-    │   └── Body
-    │       ├── VAR : var
-    │       ├── VarDeclList
-    │       │   ├── Identifier : x
-    │       │   ├── Identifier : y
-    │       │   └── TypeRef
-    │       │       └── BuiltinType : int
-    │       ├── VAR : var
-    │       ├── VarDeclList
-    │       │   ├── Identifier : flag
-    │       │   └── TypeRef
-    │       │       └── BuiltinType : bool
-    │       └── StatementBlock
-    │           ├── AssignExpr
-    │           │   ├── Identifier : x
-    │           │   └── Literal : 10
-    │           ├── AssignExpr
-    │           │   ├── Identifier : y
-    │           │   └── Literal : 20
-    │           ├── AssignExpr
-    │           │   ├── Identifier : flag
-    │           │   └── Literal : true
-    │           ├── IfStatement
-    │           │   ├── CompareExpr
-    │           │   │   ├── Identifier : x
-    │           │   │   └── Identifier : y
-    │           │   ├── CallExpr
-    │           │   │   └── Identifier : popa
-    │           │   └── CallExpr
-    │           │       └── Identifier : jopa
-    │           └── DoStatement
-    │               ├── AssignExpr
-    │               │   ├── Identifier : y
-    │               │   └── AddSubExpr
-    │               │       ├── Identifier : y
-    │               │       └── Literal : 1
-    │               └── CompareExpr
-    │                   ├── Identifier : y
-    │                   └── Literal : 0
     └── FuncDef
         ├── FuncSignature
-        │   ├── Identifier : popa
+        │   ├── Identifier : main
         │   └── TypeRef
         │       └── BuiltinType : int
         └── Body
@@ -74,25 +30,33 @@ Source
                 │   ├── CompareExpr
                 │   │   ├── Identifier : x
                 │   │   └── Identifier : y
+                │   ├── CallExpr
+                │   │   └── Identifier : popa
+                │   └── CallExpr
+                │       └── Identifier : banana
+                ├── CallExpr
+                │   └── Identifier : popa
+                ├── DoStatement
                 │   ├── AssignExpr
-                │   │   ├── Identifier : x
-                │   │   └── AddSubExpr
-                │   │       ├── Identifier : x
-                │   │       └── Identifier : y
+                │   │   ├── Identifier : y
+                │   │   └── BinaryExpr : -
+                │   │       ├── Identifier : y
+                │   │       └── BinaryExpr : /
+                │   │           ├── BinaryExpr : *
+                │   │           │   ├── Literal : 1
+                │   │           │   └── Literal : 2
+                │   │           └── Identifier : x
                 │   └── AssignExpr
                 │       ├── Identifier : x
-                │       └── AddSubExpr
-                │           ├── MulDivExpr
-                │           │   ├── Identifier : x
-                │           │   └── Identifier : y
-                │           ├── Literal : 3
-                │           └── Literal : 4
-                └── DoStatement
-                    ├── AssignExpr
-                    │   ├── Identifier : y
-                    │   └── AddSubExpr
-                    │       ├── Identifier : y
-                    │       └── Literal : 1
-                    └── CompareExpr
-                        ├── Identifier : y
-                        └── Literal : 0
+                │       └── BinaryExpr : -
+                │           ├── BinaryExpr : +
+                │           │   ├── BinaryExpr : +
+                │           │   │   ├── Literal : 1
+                │           │   │   └── Literal : 3
+                │           │   └── BinaryExpr : /
+                │           │       ├── Literal : 8
+                │           │       └── Literal : 2
+                │           └── Identifier : y
+                └── CompareExpr
+                    ├── Identifier : y
+                    └── Literal : 0
