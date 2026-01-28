@@ -7,10 +7,7 @@
 #include <variant>
 #include <vector>
 
-
-
 namespace reg32 {
-
 
 enum class BankName { code, dataMem };
 struct SectionDecl {
@@ -19,25 +16,19 @@ struct SectionDecl {
     std::optional<std::uint16_t> startAddr;
 };
 
-// =======================================================
-// Mnemonics (fixed4)
-// =======================================================
-
 enum class Mnemonic {
-    // data / moves
+    
     li,
     mov,
     load,
     store,
 
-    // arithmetic
     add,
     sub,
     mul,
     div,
     mod,
 
-    // comparisons (result: 0/1)
     eq,
     neq,
     lt,
@@ -45,30 +36,24 @@ enum class Mnemonic {
     le,
     ge,
 
-    // control flow
     jmp,
     jnz,
     call,
     ret,
 
-    // stack
     ldsp,
     ldbp,
 
-    // explicit stack ops
     push,
     pop,
 
-    // read special regs
     getbp,
     getsp,
 
-    // IO (fixed4 has these)
     setio,
     in,
     out,
-
-    //hlt
+    
     hlt
 };
 
@@ -95,10 +80,10 @@ inline const char* toString(Mnemonic m) {
         case Mnemonic::ret: return "ret";
         case Mnemonic::ldsp: return "ldsp";
         case Mnemonic::ldbp: return "ldbp";
-case Mnemonic::push: return "push";
-case Mnemonic::pop: return "pop";
-case Mnemonic::getbp: return "getbp";
-case Mnemonic::getsp: return "getsp";
+        case Mnemonic::push: return "push";
+        case Mnemonic::pop: return "pop";
+        case Mnemonic::getbp: return "getbp";
+        case Mnemonic::getsp: return "getsp";
         case Mnemonic::setio: return "setio";
         case Mnemonic::in: return "in";
         case Mnemonic::out: return "out";
@@ -107,10 +92,6 @@ case Mnemonic::getsp: return "getsp";
     return "?";
 }
 
-// =======================================================
-// Labels
-// =======================================================
-
 struct Label {
     std::string rawName;
     std::string qualifiedName;
@@ -118,16 +99,12 @@ struct Label {
 
 enum class LabelSpace { Code, Data };
 
-// =======================================================
-// Operands / instructions
-// =======================================================
-
 enum class OperandKind { Reg, Imm16, LabelRef };
 
 struct Operand {
     OperandKind kind{OperandKind::Imm16};
-    std::uint32_t value{0};          // for Reg / Imm16
-    std::string label;               // for LabelRef
+    std::uint32_t value{0};          
+    std::string label;               
     LabelSpace labelSpace{LabelSpace::Code};
 
     static Operand reg(std::uint8_t r) {
@@ -167,10 +144,6 @@ struct Instruction {
     std::string comment;
 };
 
-// =======================================================
-// Data directives (listing-level)
-// =======================================================
-
 enum class DataDirective { db, dw, dd };
 enum class ReserveDirective { resb, resw, resd };
 
@@ -190,10 +163,6 @@ struct CommentLine {
     std::string text;
 };
 
-// =======================================================
-// Line items (optional TIMES directive)
-// =======================================================
-
 struct LineItem;
 struct Times;
 
@@ -207,16 +176,11 @@ struct Times {
     std::shared_ptr<LineItem> item;
 };
 
-// =======================================================
-// Sections / program image
-// =======================================================
-
 struct Section {
     SectionDecl decl;
     std::vector<LineItem> lines;
 };
 
-// Fixups: for label operands that must be resolved to imm16 addresses later.
 struct Fixup {
     std::size_t sectionIndex{0};
     std::size_t lineIndex{0};
@@ -230,7 +194,5 @@ struct ProgramImage {
     std::optional<std::string> entryLabel;
     std::vector<Fixup> fixups;
 };
-
 void printListing(const reg32::ProgramImage& img, std::ostream& out);
-
-} // namespace reg32
+} 

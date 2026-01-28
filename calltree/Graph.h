@@ -14,14 +14,14 @@ using namespace std;
 
 enum class NodeType {
     ENTRY,          // Вход в функцию
-    EXIT,           // Выход (неявный, когда поток доходит до конца)
+    EXIT,           // Выход 
     BASIC_BLOCK,    // Блок операций
-    CONDITION,      // if (expr) then ... [else ...]
-    LOOP_HEADER,    // while/do-while/do-until (все циклы)
+    CONDITION,      // if (expr) then / else
+    LOOP_HEADER,    // while do-while do-until 
     LOOP_BODY,      // Тело цикла  
     LOOP_EXIT,      // Выход из цикла
     MERGE,          // Слияние после if/else
-    CALL
+    CALL            //Вызов функции
 };
 
 typedef enum{
@@ -40,21 +40,19 @@ struct CFGNode {
     string label;    
     string value;   
     
-    // Данные для разных типов узлов
-    string condition;          // Условие для ветвления/цикла
-    bool is_until = false;     // true если это repeat-until (инвертированное условие)
-    vector<string> statements; // Операции в блоке
-    vector<ExprPtr> exprTrees; //   дерево
+    string condition;          
+    bool is_until = false;     
+    vector<string> statements; 
+    vector<ExprPtr> exprTrees; 
     ExprPtr conditionTree;
-    ExprPtr returnExpr; // nullptr => return;
+    ExprPtr returnExpr; 
     vector<CFGNode*> predecessors;
     vector<CFGNode*> successors;
     
-    // Специальные связи
-    CFGNode* true_branch = nullptr;   // Для if: ветка true
-    CFGNode* false_branch = nullptr;  // Для if: ветка false
-    CFGNode* loop_body = nullptr;     // Для циклов: тело
-    CFGNode* loop_exit = nullptr;     // Для циклов: выход
+    CFGNode* true_branch = nullptr;   
+    CFGNode* false_branch = nullptr;  
+    CFGNode* loop_body = nullptr;     
+    CFGNode* loop_exit = nullptr;    
     
     CFGNode(NodeType t, const string& lbl = "", const string& val = "");
     
@@ -66,15 +64,11 @@ struct CFGNode {
 struct OpGraph {
     string function_name;
 
-    bool is_defined = false;   // есть тело (определение)
-    bool is_extern  = false;   // только объявление (прототип)
-
-    // (опционально на будущее: сигнатура)
-    // vector<types_t> param_types;
-    // types_t return_type = types_t::INT;
+    bool is_defined = false;   
+    bool is_extern  = false;  
 
     unordered_map<string, types_t> variables;
-    std::vector<std::string> args; // порядок аргументов: args[0] -> r0, args[1] -> r1 ...
+    std::vector<std::string> args; 
     CFGNode* entry = nullptr;
     CFGNode* exit  = nullptr;
 

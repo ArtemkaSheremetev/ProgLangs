@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/artem/study/yap/lab1ANTLR
+CMAKE_SOURCE_DIR = /home/artem/study/yap/ProgLangs
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/artem/study/yap/lab1ANTLR/build
+CMAKE_BINARY_DIR = /home/artem/study/yap/ProgLangs/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/artem/study/yap/lab1ANTLR/build/CMakeFiles /home/artem/study/yap/lab1ANTLR/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/artem/study/yap/ProgLangs/build/CMakeFiles /home/artem/study/yap/ProgLangs/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/artem/study/yap/lab1ANTLR/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/artem/study/yap/ProgLangs/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named ProgLangLab1
+# Target rules for targets named ProgLang
 
 # Build rule for target.
-ProgLangLab1: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ProgLangLab1
-.PHONY : ProgLangLab1
+ProgLang: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ProgLang
+.PHONY : ProgLang
 
 # fast build rule for target.
-ProgLangLab1/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/build
-.PHONY : ProgLangLab1/fast
+ProgLang/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/build
+.PHONY : ProgLang/fast
 
 calltree/CFGBuilder.o: calltree/CFGBuilder.cpp.o
 .PHONY : calltree/CFGBuilder.o
 
 # target to build an object file
 calltree/CFGBuilder.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/calltree/CFGBuilder.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/calltree/CFGBuilder.cpp.o
 .PHONY : calltree/CFGBuilder.cpp.o
 
 calltree/CFGBuilder.i: calltree/CFGBuilder.cpp.i
@@ -142,7 +142,7 @@ calltree/CFGBuilder.i: calltree/CFGBuilder.cpp.i
 
 # target to preprocess a source file
 calltree/CFGBuilder.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/calltree/CFGBuilder.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/calltree/CFGBuilder.cpp.i
 .PHONY : calltree/CFGBuilder.cpp.i
 
 calltree/CFGBuilder.s: calltree/CFGBuilder.cpp.s
@@ -150,7 +150,7 @@ calltree/CFGBuilder.s: calltree/CFGBuilder.cpp.s
 
 # target to generate assembly for a file
 calltree/CFGBuilder.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/calltree/CFGBuilder.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/calltree/CFGBuilder.cpp.s
 .PHONY : calltree/CFGBuilder.cpp.s
 
 calltree/Graph.o: calltree/Graph.cpp.o
@@ -158,7 +158,7 @@ calltree/Graph.o: calltree/Graph.cpp.o
 
 # target to build an object file
 calltree/Graph.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/calltree/Graph.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/calltree/Graph.cpp.o
 .PHONY : calltree/Graph.cpp.o
 
 calltree/Graph.i: calltree/Graph.cpp.i
@@ -166,7 +166,7 @@ calltree/Graph.i: calltree/Graph.cpp.i
 
 # target to preprocess a source file
 calltree/Graph.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/calltree/Graph.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/calltree/Graph.cpp.i
 .PHONY : calltree/Graph.cpp.i
 
 calltree/Graph.s: calltree/Graph.cpp.s
@@ -174,7 +174,7 @@ calltree/Graph.s: calltree/Graph.cpp.s
 
 # target to generate assembly for a file
 calltree/Graph.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/calltree/Graph.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/calltree/Graph.cpp.s
 .PHONY : calltree/Graph.cpp.s
 
 lab3/Reg32CodeGenModule.o: lab3/Reg32CodeGenModule.cpp.o
@@ -182,7 +182,7 @@ lab3/Reg32CodeGenModule.o: lab3/Reg32CodeGenModule.cpp.o
 
 # target to build an object file
 lab3/Reg32CodeGenModule.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/lab3/Reg32CodeGenModule.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/lab3/Reg32CodeGenModule.cpp.o
 .PHONY : lab3/Reg32CodeGenModule.cpp.o
 
 lab3/Reg32CodeGenModule.i: lab3/Reg32CodeGenModule.cpp.i
@@ -190,7 +190,7 @@ lab3/Reg32CodeGenModule.i: lab3/Reg32CodeGenModule.cpp.i
 
 # target to preprocess a source file
 lab3/Reg32CodeGenModule.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/lab3/Reg32CodeGenModule.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/lab3/Reg32CodeGenModule.cpp.i
 .PHONY : lab3/Reg32CodeGenModule.cpp.i
 
 lab3/Reg32CodeGenModule.s: lab3/Reg32CodeGenModule.cpp.s
@@ -198,7 +198,7 @@ lab3/Reg32CodeGenModule.s: lab3/Reg32CodeGenModule.cpp.s
 
 # target to generate assembly for a file
 lab3/Reg32CodeGenModule.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/lab3/Reg32CodeGenModule.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/lab3/Reg32CodeGenModule.cpp.s
 .PHONY : lab3/Reg32CodeGenModule.cpp.s
 
 main.o: main.cpp.o
@@ -206,7 +206,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -214,7 +214,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -222,7 +222,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 parser/HelloBaseVisitor.o: parser/HelloBaseVisitor.cpp.o
@@ -230,7 +230,7 @@ parser/HelloBaseVisitor.o: parser/HelloBaseVisitor.cpp.o
 
 # target to build an object file
 parser/HelloBaseVisitor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloBaseVisitor.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloBaseVisitor.cpp.o
 .PHONY : parser/HelloBaseVisitor.cpp.o
 
 parser/HelloBaseVisitor.i: parser/HelloBaseVisitor.cpp.i
@@ -238,7 +238,7 @@ parser/HelloBaseVisitor.i: parser/HelloBaseVisitor.cpp.i
 
 # target to preprocess a source file
 parser/HelloBaseVisitor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloBaseVisitor.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloBaseVisitor.cpp.i
 .PHONY : parser/HelloBaseVisitor.cpp.i
 
 parser/HelloBaseVisitor.s: parser/HelloBaseVisitor.cpp.s
@@ -246,7 +246,7 @@ parser/HelloBaseVisitor.s: parser/HelloBaseVisitor.cpp.s
 
 # target to generate assembly for a file
 parser/HelloBaseVisitor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloBaseVisitor.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloBaseVisitor.cpp.s
 .PHONY : parser/HelloBaseVisitor.cpp.s
 
 parser/HelloLexer.o: parser/HelloLexer.cpp.o
@@ -254,7 +254,7 @@ parser/HelloLexer.o: parser/HelloLexer.cpp.o
 
 # target to build an object file
 parser/HelloLexer.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloLexer.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloLexer.cpp.o
 .PHONY : parser/HelloLexer.cpp.o
 
 parser/HelloLexer.i: parser/HelloLexer.cpp.i
@@ -262,7 +262,7 @@ parser/HelloLexer.i: parser/HelloLexer.cpp.i
 
 # target to preprocess a source file
 parser/HelloLexer.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloLexer.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloLexer.cpp.i
 .PHONY : parser/HelloLexer.cpp.i
 
 parser/HelloLexer.s: parser/HelloLexer.cpp.s
@@ -270,7 +270,7 @@ parser/HelloLexer.s: parser/HelloLexer.cpp.s
 
 # target to generate assembly for a file
 parser/HelloLexer.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloLexer.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloLexer.cpp.s
 .PHONY : parser/HelloLexer.cpp.s
 
 parser/HelloParser.o: parser/HelloParser.cpp.o
@@ -278,7 +278,7 @@ parser/HelloParser.o: parser/HelloParser.cpp.o
 
 # target to build an object file
 parser/HelloParser.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloParser.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloParser.cpp.o
 .PHONY : parser/HelloParser.cpp.o
 
 parser/HelloParser.i: parser/HelloParser.cpp.i
@@ -286,7 +286,7 @@ parser/HelloParser.i: parser/HelloParser.cpp.i
 
 # target to preprocess a source file
 parser/HelloParser.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloParser.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloParser.cpp.i
 .PHONY : parser/HelloParser.cpp.i
 
 parser/HelloParser.s: parser/HelloParser.cpp.s
@@ -294,7 +294,7 @@ parser/HelloParser.s: parser/HelloParser.cpp.s
 
 # target to generate assembly for a file
 parser/HelloParser.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloParser.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloParser.cpp.s
 .PHONY : parser/HelloParser.cpp.s
 
 parser/HelloVisitor.o: parser/HelloVisitor.cpp.o
@@ -302,7 +302,7 @@ parser/HelloVisitor.o: parser/HelloVisitor.cpp.o
 
 # target to build an object file
 parser/HelloVisitor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloVisitor.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloVisitor.cpp.o
 .PHONY : parser/HelloVisitor.cpp.o
 
 parser/HelloVisitor.i: parser/HelloVisitor.cpp.i
@@ -310,7 +310,7 @@ parser/HelloVisitor.i: parser/HelloVisitor.cpp.i
 
 # target to preprocess a source file
 parser/HelloVisitor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloVisitor.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloVisitor.cpp.i
 .PHONY : parser/HelloVisitor.cpp.i
 
 parser/HelloVisitor.s: parser/HelloVisitor.cpp.s
@@ -318,7 +318,7 @@ parser/HelloVisitor.s: parser/HelloVisitor.cpp.s
 
 # target to generate assembly for a file
 parser/HelloVisitor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/parser/HelloVisitor.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/parser/HelloVisitor.cpp.s
 .PHONY : parser/HelloVisitor.cpp.s
 
 visitor/HelloASTVisitor.o: visitor/HelloASTVisitor.cpp.o
@@ -326,7 +326,7 @@ visitor/HelloASTVisitor.o: visitor/HelloASTVisitor.cpp.o
 
 # target to build an object file
 visitor/HelloASTVisitor.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/visitor/HelloASTVisitor.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/visitor/HelloASTVisitor.cpp.o
 .PHONY : visitor/HelloASTVisitor.cpp.o
 
 visitor/HelloASTVisitor.i: visitor/HelloASTVisitor.cpp.i
@@ -334,7 +334,7 @@ visitor/HelloASTVisitor.i: visitor/HelloASTVisitor.cpp.i
 
 # target to preprocess a source file
 visitor/HelloASTVisitor.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/visitor/HelloASTVisitor.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/visitor/HelloASTVisitor.cpp.i
 .PHONY : visitor/HelloASTVisitor.cpp.i
 
 visitor/HelloASTVisitor.s: visitor/HelloASTVisitor.cpp.s
@@ -342,7 +342,7 @@ visitor/HelloASTVisitor.s: visitor/HelloASTVisitor.cpp.s
 
 # target to generate assembly for a file
 visitor/HelloASTVisitor.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/visitor/HelloASTVisitor.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLang.dir/build.make CMakeFiles/ProgLang.dir/visitor/HelloASTVisitor.cpp.s
 .PHONY : visitor/HelloASTVisitor.cpp.s
 
 # Help Target
@@ -353,7 +353,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... ProgLangLab1"
+	@echo "... ProgLang"
 	@echo "... calltree/CFGBuilder.o"
 	@echo "... calltree/CFGBuilder.i"
 	@echo "... calltree/CFGBuilder.s"

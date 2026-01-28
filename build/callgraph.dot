@@ -3,7 +3,9 @@ digraph CallGraph {
   node [shape=box, fontname="Courier"];
 
   "main";
+  "fib";
 
   // edges
   "main" -> "writeChar";
+  "main" -> "writeInt";
 }

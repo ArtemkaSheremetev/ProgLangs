@@ -30,7 +30,7 @@ void CFGNode::add_successor(CFGNode* succ) {
         if (find(succ->predecessors.begin(), succ->predecessors.end(), this) 
             == succ->predecessors.end()) {
             succ->predecessors.push_back(this);
-        }    // Проверяем, нет ли уже такой связи
+        }    
     }
 }
 
@@ -42,7 +42,7 @@ CFGNode* OpGraph::create_node(NodeType type, const string& label,
     return nodes.back().get();
 }
 
-// ==================== CallGraph методы ====================
+//CallGraph методы
 
 OpGraph* CallGraph::create_function(const string& name) {
     // Создаем новый OpGraph

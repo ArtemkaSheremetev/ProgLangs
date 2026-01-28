@@ -1,0 +1,318 @@
+// harvard, 2-operand ISA 4 bytes every instruction
+architecture harvard32 {
+
+    /*
+        Requirements:
+          typing: static
+          instruction format: two-address (2 operands)
+          memory model: code data 
+    */
+
+    registers:
+        storage ip [32]; // instruction pointer (byte address in CODE space)
+        storage sp [32]; // stack pointer (byte address in DATA space, grows down)
+        storage bp [32]; // base/frame pointer (in DATA space)
+
+        storage r0st [32];
+        storage r1st [32];
+        storage r2st [32];
+        storage r3st [32];
+        storage r4st [32];
+        storage r5st [32];
+        storage r6st [32];
+        storage r7st [32];
+        storage r8st [32];
+        storage r9st [32];
+        storage r10st [32];
+
+        storage ioport [8]; 
+
+        storage rin  [8];
+        storage rout [8];
+
+        view r0  = r0st;
+        view r1  = r1st;
+        view r2  = r2st;
+        view r3  = r3st;
+        view r4  = r4st;
+        view r5  = r5st;
+        view r6  = r6st;
+        view r7  = r7st;
+        view r8  = r8st;
+        view r9  = r9st;
+        view r10 = r10st;
+
+    memory:
+
+    range code [0x0000 .. 0xffff] {
+        cell = 8;
+        endianess = little-endian;
+        granularity = 1;
+    }
+
+    range dataMem [0x0000 .. 0xffff] {
+        cell = 8;
+        endianess = little-endian;
+        granularity = 1;
+    }
+
+    instructions:
+
+    // --- fields ---
+    encode reg4 field = register {
+        r0  = 0000,
+        r1  = 0001,
+        r2  = 0010,
+        r3  = 0011,
+        r4  = 0100,
+        r5  = 0101,
+        r6  = 0110,
+        r7  = 0111,
+        r8  = 1000,
+        r9  = 1001,
+        r10 = 1010
+    };
+
+    encode imm16 field = immediate [16];
+    encode pad4  field = immediate [4];
+    encode pad8  field = immediate [8];
+    encode pad16 field = immediate [16];
+    encode pad24 field = immediate [24];
+
+    // -------- control (CODE) --------
+
+    instruction jmp = { 0001 0000, imm16 as target, 0000 0000 } {
+        ip = target; // CODE address
+    };
+
+    instruction j = { 0001 0001, imm16 as target, pad8 as _pad } {
+        ip = target;
+    };
+
+    instruction jnz = { 0001 0010, reg4 as reg, 0000, imm16 as target } {
+        if reg != 0 then
+            ip = target;
+        else
+            ip = ip + 4;
+    };
+
+    // call/ret use DATA stack, but ip is CODE
+    instruction call = { 0001 0011, imm16 as target, 0000 0000 } {
+        // push return address (next instruction in CODE)
+        sp = sp - 4;
+        dataMem:4[sp & 0xffff] = ip + 4;
+
+        // push old bp (DATA)
+        sp = sp - 4;
+        dataMem:4[sp & 0xffff] = bp;
+
+        // new frame base
+        bp = sp;
+
+        // jump to callee (CODE)
+        ip = target;
+    };
+
+    instruction ret = { 0001 0100, 0000 0000 0000 0000 0000 0000 } {
+        // layout in DATA at [bp]:
+        //   [bp + 0] old_bp
+        //   [bp + 4] return_ip (CODE)
+        r7 = dataMem:4[bp & 0xffff];
+        ip = dataMem:4[(bp + 4) & 0xffff];
+        sp = bp + 8;
+        bp = r7;
+    };
+
+    // -------- stack/frame init (DATA) --------
+
+    instruction ldsp = { 0001 0110, imm16 as value, 0000 0000 } {
+        sp = value;     // DATA address
+        ip = ip + 4;
+    };
+
+    instruction ldbp = { 0001 0111, imm16 as value, 0000 0000 } {
+        bp = value;     // DATA address
+        ip = ip + 4;
+    };
+
+    // -------- explicit stack ops (DATA) --------
+    // 32-bit pushes/pops, like call/ret.
+
+    instruction push = { 0001 1000, reg4 as src, 0000 0000 0000 0000 0000 } {
+        sp = sp - 4;
+        dataMem:4[sp & 0xffff] = src;
+        ip = ip + 4;
+    };
+
+    instruction pop = { 0001 1001, reg4 as dst, 0000 0000 0000 0000 0000 } {
+        dst = dataMem:4[sp & 0xffff];
+        sp = sp + 4;
+        ip = ip + 4;
+    };
+
+    
+
+    // -------- read special registers into GPR --------
+    // Needed for stack-frame addressing (locals/args at bp-relative addresses).
+    instruction getbp = { 0001 1010, reg4 as dst, 0000 0000 0000 0000 0000 } {
+        dst = bp;
+        ip = ip + 4;
+    };
+
+    instruction getsp = { 0001 1011, reg4 as dst, 0000 0000 0000 0000 0000 } {
+        dst = sp;
+        ip = ip + 4;
+    };
+
+// -------- moves / immediates --------
+
+    instruction mov = { 0010 0000, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = src;
+        ip = ip + 4;
+    };
+
+    // li: imm16 sign-extend -> 32
+    instruction li = { 0010 0001, reg4 as dst, 0000, imm16 as imm } {
+        r7 = imm;
+        r7 = r7 ^ 0x8000;
+        r7 = r7 - 0x8000;
+        dst = r7;
+        ip = ip + 4;
+    };
+
+    // -------- memory (DATA) --------
+
+    instruction load = { 0010 0010, reg4 as dst, reg4 as addr, 0000 0000 0000 0000 } {
+        dst = dataMem:4[addr & 0xffff];
+        ip = ip + 4;
+    };
+
+    instruction store = { 0010 0011, reg4 as addr, reg4 as src, 0000 0000 0000 0000 } {
+        dataMem:4[addr & 0xffff] = src;
+        ip = ip + 4;
+    };
+
+    // -------- arithmetic (dst = dst op src) --------
+
+    instruction add = { 0100 0000, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = dst + src;
+        ip = ip + 4;
+    };
+
+    instruction sub = { 0100 0001, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = dst - src;
+        ip = ip + 4;
+    };
+
+    instruction mul = { 0100 0010, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = dst * src;
+        ip = ip + 4;
+    };
+
+    instruction div = { 0100 0011, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = dst / src;
+        ip = ip + 4;
+    };
+
+    instruction mod = { 0100 0100, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = dst % src;
+        ip = ip + 4;
+    };
+
+    // -------- comparisons (result 0/1 in dst) --------
+
+    instruction eq = { 0100 1000, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = (dst == src);
+        ip = ip + 4;
+    };
+
+    instruction neq = { 0100 1001, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = (dst != src);
+        ip = ip + 4;
+    };
+
+    instruction lt = { 0100 1010, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = (dst < src);
+        ip = ip + 4;
+    };
+
+    instruction gt = { 0100 1011, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = (dst > src);
+        ip = ip + 4;
+    };
+
+    instruction le = { 0100 1100, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = (dst <= src);
+        ip = ip + 4;
+    };
+
+    instruction ge = { 0100 1101, reg4 as dst, reg4 as src, 0000 0000 0000 0000 } {
+        dst = (dst >= src);
+        ip = ip + 4;
+    };
+
+    // -------- byte IO --------
+    // rin/rout are 8-bit storages. Assignments automatically truncate/extend.
+    // (No bitwise AND needed.)
+
+    instruction in = { 0110 0001, reg4 as dst, 0000 0000 0000 0000 0000 } {
+        // read one byte from runtime stdin (rin), zero-extend to 32
+        dst = rin;
+        ip = ip + 4;
+    };
+
+    instruction out = { 0110 0010, reg4 as src, 0000 0000 0000 0000 0000 } {
+        // write one byte to runtime stdout (rout) (truncate to 8-bit)
+        rout = src;
+        ip = ip + 4;
+    };
+
+    instruction hlt = { 1111 1111, 0000 0000, 0000 0000, 0000 0000 } {
+        ip = ip + 4;
+    };
+
+    mnemonics:
+
+    format plain0 is "";
+    format plain1 is "{1}";
+    format plain2 is "{1}, {2}";
+
+    mnemonic jmp for jmp(target) plain1;
+    mnemonic jnz(reg, target) plain2;
+    mnemonic call(target) plain1;
+    mnemonic ret() plain0;
+
+    mnemonic ldsp(value) plain1;
+    mnemonic ldbp(value) plain1;
+
+    mnemonic push(src) plain1;
+    mnemonic pop(dst)  plain1;
+
+
+    mnemonic getbp(dst) plain1;
+    mnemonic getsp(dst) plain1;
+
+    mnemonic mov(dst, src) plain2;
+    mnemonic li(dst, imm)  plain2;
+
+    mnemonic load(dst, addr)  plain2;
+    mnemonic store(addr, src) plain2;
+
+    mnemonic add(dst, src) plain2;
+    mnemonic sub(dst, src) plain2;
+    mnemonic mul(dst, src) plain2;
+    mnemonic div(dst, src) plain2;
+    mnemonic mod(dst, src) plain2;
+
+    mnemonic eq(dst, src)  plain2;
+    mnemonic neq(dst, src) plain2;
+    mnemonic lt(dst, src)  plain2;
+    mnemonic gt(dst, src)  plain2;
+    mnemonic le(dst, src)  plain2;
+    mnemonic ge(dst, src)  plain2;
+
+    mnemonic in(dst)  plain1;
+    mnemonic out(src) plain1;
+
+    mnemonic hlt() plain0;
+}

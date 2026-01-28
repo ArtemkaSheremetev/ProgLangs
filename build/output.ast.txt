@@ -1,4 +1,45 @@
 Source
+    ├── FuncDef
+    │   ├── FuncSignature
+    │   │   ├── Identifier : fib
+    │   │   ├── ArgList
+    │   │   │   └── ArgDef
+    │   │   │       ├── Identifier : n
+    │   │   │       └── TypeRef
+    │   │   │           └── BuiltinType : int
+    │   │   └── TypeRef
+    │   │       └── BuiltinType : int
+    │   └── Body
+    │       ├── VAR : var
+    │       ├── VarDeclList
+    │       │   ├── Identifier : r
+    │       │   └── TypeRef
+    │       │       └── BuiltinType : int
+    │       └── StatementBlock
+    │           ├── IfStatement
+    │           │   ├── CompareExpr : <
+    │           │   │   ├── Identifier : n
+    │           │   │   └── Literal : 2
+    │           │   ├── AssignExpr
+    │           │   │   ├── Identifier : r
+    │           │   │   └── Literal : 1
+    │           │   └── AssignExpr
+    │           │       ├── Identifier : r
+    │           │       └── BinaryExpr : +
+    │           │           ├── CallExpr
+    │           │           │   ├── Identifier : fib
+    │           │           │   └── ExprList
+    │           │           │       └── BinaryExpr : -
+    │           │           │           ├── Identifier : n
+    │           │           │           └── Literal : 1
+    │           │           └── CallExpr
+    │           │               ├── Identifier : fib
+    │           │               └── ExprList
+    │           │                   └── BinaryExpr : -
+    │           │                       ├── Identifier : n
+    │           │                       └── Literal : 2
+    │           └── ReturnStatement
+    │               └── Identifier : r
     └── FuncDef
         ├── FuncSignature
         │   ├── Identifier : main
@@ -7,15 +48,86 @@ Source
         └── Body
             ├── VAR : var
             ├── VarDeclList
-            │   ├── Identifier : ch
+            │   ├── Identifier : x
+            │   ├── Identifier : num
+            │   ├── Identifier : op
             │   └── TypeRef
-            │       └── BuiltinType : char
+            │       └── BuiltinType : int
             └── StatementBlock
                 ├── AssignExpr
-                │   ├── Identifier : ch
-                │   └── CallExpr
-                │       └── Identifier : readChar
-                └── CallExpr
-                    ├── Identifier : writeChar
-                    └── ExprList
-                        └── Identifier : ch
+                │   ├── Identifier : x
+                │   └── Literal : 0
+                ├── WhileStatement
+                │   ├── Literal : 1
+                │   └── StatementBlock
+                │       ├── AssignExpr
+                │       │   ├── Identifier : op
+                │       │   └── CallExpr
+                │       │       └── Identifier : readChar
+                │       ├── AssignExpr
+                │       │   ├── Identifier : num
+                │       │   └── CallExpr
+                │       │       └── Identifier : readInt
+                │       ├── IfStatement
+                │       │   ├── CompareExpr : ==
+                │       │   │   ├── Identifier : op
+                │       │   │   └── Literal : 'f'
+                │       │   └── AssignExpr
+                │       │       ├── Identifier : x
+                │       │       └── CallExpr
+                │       │           ├── Identifier : fib
+                │       │           └── ExprList
+                │       │               └── Identifier : num
+                │       ├── IfStatement
+                │       │   ├── CompareExpr : ==
+                │       │   │   ├── Identifier : op
+                │       │   │   └── Literal : '+'
+                │       │   └── AssignExpr
+                │       │       ├── Identifier : x
+                │       │       └── BinaryExpr : +
+                │       │           ├── Identifier : x
+                │       │           └── Identifier : num
+                │       ├── IfStatement
+                │       │   ├── CompareExpr : ==
+                │       │   │   ├── Identifier : op
+                │       │   │   └── Literal : '-'
+                │       │   └── AssignExpr
+                │       │       ├── Identifier : x
+                │       │       └── BinaryExpr : -
+                │       │           ├── Identifier : x
+                │       │           └── Identifier : num
+                │       ├── IfStatement
+                │       │   ├── CompareExpr : ==
+                │       │   │   ├── Identifier : op
+                │       │   │   └── Literal : '*'
+                │       │   └── AssignExpr
+                │       │       ├── Identifier : x
+                │       │       └── BinaryExpr : *
+                │       │           ├── Identifier : x
+                │       │           └── Identifier : num
+                │       ├── IfStatement
+                │       │   ├── CompareExpr : ==
+                │       │   │   ├── Identifier : op
+                │       │   │   └── Literal : '/'
+                │       │   └── IfStatement
+                │       │       ├── CompareExpr : ==
+                │       │       │   ├── Identifier : num
+                │       │       │   └── Literal : 0
+                │       │       ├── AssignExpr
+                │       │       │   ├── Identifier : x
+                │       │       │   └── Literal : 0
+                │       │       └── AssignExpr
+                │       │           ├── Identifier : x
+                │       │           └── BinaryExpr : /
+                │       │               ├── Identifier : x
+                │       │               └── Identifier : num
+                │       ├── CallExpr
+                │       │   ├── Identifier : writeInt
+                │       │   └── ExprList
+                │       │       └── Identifier : x
+                │       └── CallExpr
+                │           ├── Identifier : writeChar
+                │           └── ExprList
+                │               └── Literal : '\n'
+                └── ReturnStatement
+                    └── Literal : 0

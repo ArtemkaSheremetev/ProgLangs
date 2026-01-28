@@ -159,7 +159,7 @@ std::any HelloASTVisitor::visitAssignExpr(HelloParser::AssignExprContext *contex
     return visit(context->logicalOrExpr());
 }
 
-// ------------------ Logical / Compare / Add / Mul / Unary / Primary ------------------
+// ------------------ Logical / Compare / Add / Mul / Unary / -----------------
 std::any HelloASTVisitor::visitLogicalOrExpr(HelloParser::LogicalOrExprContext *context) {
     if (context->logicalAndExpr().size() == 1)
         return visit(context->logicalAndExpr(0));
@@ -198,12 +198,9 @@ std::any HelloASTVisitor::visitCallExpr(HelloParser::CallExprContext *context) {
 
 
 std::any HelloASTVisitor::visitCompareExpr(HelloParser::CompareExprContext *ctx) {
-    // первый операнд
     auto left = std::any_cast<ASTNodePtr>(visit(ctx->addSubExpr(0)));
 
-    // дальше цепочка (op rhs)
     for (size_t i = 1; i < ctx->addSubExpr().size(); ++i) {
-        // оператор между operands (>, <, ==, != и т.д.)
         std::string op = ctx->children[2*i - 1]->getText();
 
         auto right = std::any_cast<ASTNodePtr>(visit(ctx->addSubExpr(i)));
@@ -212,7 +209,7 @@ std::any HelloASTVisitor::visitCompareExpr(HelloParser::CompareExprContext *ctx)
         bin->addChild(left);
         bin->addChild(right);
 
-        left = bin; // "сдвигаем" левый узел для следующей итерации
+        left = bin;
     }
 
     return left;
@@ -220,12 +217,10 @@ std::any HelloASTVisitor::visitCompareExpr(HelloParser::CompareExprContext *ctx)
 
 
 std::any HelloASTVisitor::visitAddSubExpr(HelloParser::AddSubExprContext *ctx) {
-    // первый операнд
+
     auto left = std::any_cast<ASTNodePtr>(visit(ctx->mulDivExpr(0)));
 
-    // дальше цепочка (op rhs)
     for (size_t i = 1; i < ctx->mulDivExpr().size(); ++i) {
-        // оператор между operands
         std::string op = ctx->children[2*i - 1]->getText(); // + или -
 
         auto right = std::any_cast<ASTNodePtr>(visit(ctx->mulDivExpr(i)));
