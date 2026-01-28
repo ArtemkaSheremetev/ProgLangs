@@ -56,6 +56,7 @@ bash dot_to_png.sh
 
 После генерации ассемблера выполните:
 ```bash
+cd ..
 bash build_script.sh
 bash execute_script.sh
 ```
