@@ -1,36 +1,40 @@
 #pragma once
 
-#include <memory>
-#include <string>
-
-#include "ASTNodes.h"
 #include "Graph.h"
-#include <unordered_map>
-#include <stack>
+#include "ASTNodes.h"
+#include "exprTree.h"
+
+types_t ParseType(const std::string& str);
+
+struct BuildRes {
+    CFGNode* start = nullptr;
+    CFGNode* end = nullptr;
+};
 
 
-struct CFGBuilder {
-    OpGraph* graph;     // текущий граф функции
-    CFGNode* current;  // текущая точка потока управления
-    CallGraph* callGraph;
-    
-    explicit CFGBuilder(OpGraph* g, CallGraph* cg);
+class CFGBuilder {
+public:
+    CFGBuilder(OpGraph* g, CallGraph* cg);
 
-    // Точка входа — тело функции (Body)
     void build(ASTNode* body);
 
-    // Обход AST
-    CFGNode* visitStatement(ASTNode* stmt);
-    CFGNode* visitBlock(ASTNode* block);
-    CFGNode* visitCall(ASTNode* node);
-    CFGNode* emitExprNode(ASTNode* node);
-    void visitVars(ASTNode* vars);
-
 private:
-    // Специализированные конструкции
-    CFGNode* visitIf(ASTNode* stmt);
-    CFGNode* visitWhile(ASTNode* stmt);
-    CFGNode* visitDo(ASTNode* stmt, ASTNode* condNode);
-    // Утилиты
-    std::string exprToString(ASTNode* expr);
+    OpGraph* graph;
+    CallGraph* callGraph;
+    CFGNode* current;
+
+    // ====== visitors ======
+    BuildRes visitStatement(ASTNode* node);
+    BuildRes visitBlock(ASTNode* node);
+    BuildRes visitReturn(ASTNode* node);
+    BuildRes visitIf(ASTNode* node);
+    BuildRes visitWhile(ASTNode* node);
+    BuildRes visitDo(ASTNode* node, ASTNode* condNode);
+    BuildRes visitCall(ASTNode* node);
+
+    void visitVars(ASTNode* node);
+
+    // ====== expressions ======
+    std::string exprToString(ASTNode* node);
+    ExprPtr buildExprTree(ASTNode* node);
 };

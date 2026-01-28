@@ -408,5 +408,9 @@ CMakeFiles/ProgLangLab1.dir/main.cpp.o: \
  /home/artem/study/yap/lab1ANTLR/visitor/HelloASTVisitor.h \
  /home/artem/study/yap/lab1ANTLR/parser/HelloVisitor.h \
  /home/artem/study/yap/lab1ANTLR/visitor/ASTNodes.h \
+ /home/artem/study/yap/lab1ANTLR/lab3/Reg32CodeGenModule.h \
  /home/artem/study/yap/lab1ANTLR/calltree/Graph.h \
+ /home/artem/study/yap/lab1ANTLR/calltree/exprTree.h \
+ /home/artem/study/yap/lab1ANTLR/lab3/Reg32VMImageStructures.h \
+ /usr/include/c++/13/optional /usr/include/c++/13/variant \
  /home/artem/study/yap/lab1ANTLR/calltree/CFGBuilder.h

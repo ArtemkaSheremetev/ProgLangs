@@ -2,18 +2,20 @@
 #include <fstream>
 #include <string>
 #include <memory>
-
 #include "antlr4-runtime.h"
 #include "HelloLexer.h"
 #include "HelloParser.h"
 #include "HelloASTVisitor.h"
-
+#include "Reg32CodeGenModule.h"
 #include "ASTNodes.h"
 #include "Graph.h"
 #include "CFGBuilder.h"
+#include "exprTree.h"
+#include "Reg32VMImageStructures.h"
 
 using namespace antlr4;
 using namespace std;
+using namespace reg32_codegen;
 
 // ========================================================
 // AST PRINT
@@ -71,7 +73,6 @@ int main(int argc, const char* argv[]) {
 
     // ---------- PRINT AST ----------
     ofstream astFile("output.ast.txt");
-    printAST(ast, cout);
     printAST(ast, astFile);
     astFile.close();
 
@@ -98,12 +99,7 @@ int main(int argc, const char* argv[]) {
             }
         }
 
-        cout << "Building CFG for function: " << funcName << endl;
-
-        // -------- create graph --------
-        OpGraph* graph = callGraph.create_function(funcName);
-
-        // -------- function body --------
+        // -------- find body (optional) --------
         ASTNode* body = nullptr;
         for (auto& c : child->children) {
             if (c->name == "Body") {
@@ -111,17 +107,55 @@ int main(int argc, const char* argv[]) {
                 break;
             }
         }
+        bool hasBody = (body != nullptr);
 
-        if (!body) {
-            cerr << "Warning: function " << funcName << " has no body\n";
+        OpGraph* graph = callGraph.get_function(funcName);
+        if (!graph) graph = callGraph.create_function(funcName);
+
+        graph->args.clear();
+
+        for (auto& sigChild : signature->children) {
+            if (sigChild->name != "ArgList") continue;
+
+            // ArgList -> ArgDef*
+            for (auto& argDef : sigChild->children) {
+                if (argDef->name != "ArgDef") continue;
+
+                std::string argName;
+                types_t argType = types_t::INT; // default
+
+                for (auto& a : argDef->children) {
+                    if (a->name == "Identifier") argName = a->value;
+                    else if (a->name == "TypeRef" && !a->children.empty()) {
+                        // TypeRef -> BuiltinType/Identifier...
+                        argType = ParseType(a->children[0]->value);
+                    }
+                }
+
+                if (!argName.empty()) {
+                    graph->args.push_back(argName);
+                    graph->variables[argName] = argType; // ✅ важно: теперь n станет переменной
+                }
+            }
+        }
+
+
+        // -------- mark defined/extern --------
+        graph->function_name = funcName;
+        graph->is_defined = hasBody;
+        graph->is_extern  = !hasBody;
+
+        if (!hasBody) {
+            cout << "Registered extern function: " << funcName << endl;
             continue;
         }
 
-        // -------- build CFG --------
+        cout << "Building CFG for function: " << funcName << endl;
+
         CFGBuilder builder(graph, &callGraph);
         builder.build(body);
 
-        // -------- save DOT --------
+        // dot
         string dotName = funcName + ".cfg.dot";
         ofstream dotFile(dotName);
         dotFile << graph->to_dot();
@@ -129,6 +163,15 @@ int main(int argc, const char* argv[]) {
 
         cout << "CFG saved to " << dotName << endl;
     }
+
+        // === ASM ===
+        auto res = reg32_codegen::buildProgramImage(callGraph);
+        std::ofstream asmFile("program.s");
+        reg32::printListing(res.image, asmFile);
+        asmFile.close();
+
+        std::cout << "ASM saved to program.s\n";
+    
 
     // -------- save CallGraph DOT --------
     ofstream cgFile("callgraph.dot");

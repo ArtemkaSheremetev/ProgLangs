@@ -18,6 +18,7 @@ std::any HelloASTVisitor::visitSourceItem(HelloParser::SourceItemContext *contex
 std::any HelloASTVisitor::visitFuncDef(HelloParser::FuncDefContext *context) {
     auto node = std::make_shared<ASTNode>("FuncDef");
     node->addChild(std::any_cast<ASTNodePtr>(visit(context->funcSignature())));
+    if (context->body())
     node->addChild(std::any_cast<ASTNodePtr>(visit(context->body())));
     return node;
 }
@@ -48,7 +49,9 @@ std::any HelloASTVisitor::visitArgList(HelloParser::ArgListContext *context) {
 std::any HelloASTVisitor::visitArgDef(HelloParser::ArgDefContext *context) {
     auto node = std::make_shared<ASTNode>("ArgDef");
     node->addChild(std::any_cast<ASTNodePtr>(visit(context->identifier())));
+    if (context->typeRef())
     node->addChild(std::any_cast<ASTNodePtr>(visit(context->typeRef())));
+
     return node;
 }
 
@@ -69,7 +72,10 @@ std::any HelloASTVisitor::visitVarDeclList(HelloParser::VarDeclListContext *cont
     for (auto id : context->identifier()) {
         node->addChild(std::any_cast<ASTNodePtr>(visit(id)));
     }
+    if (context->typeRef())
     node->addChild(std::any_cast<ASTNodePtr>(visit(context->typeRef())));
+
+
     return node;
 }
 
@@ -84,12 +90,23 @@ std::any HelloASTVisitor::visitStatementBlock(HelloParser::StatementBlockContext
 
 // ------------------ Statement ------------------
 std::any HelloASTVisitor::visitStatement(HelloParser::StatementContext *context) {
+    if (context->returnStatement()) return visit(context->returnStatement());
     if (context->ifStatement()) return visit(context->ifStatement());
     if (context->whileStatement()) return visit(context->whileStatement());
     if (context->doStatement()) return visit(context->doStatement());
     if (context->statementBlock()) return visit(context->statementBlock());
     if (context->exprStatement()) return visit(context->exprStatement());
     return nullptr;
+}
+
+
+// ------------------ ReturnStatement ------------------
+std::any HelloASTVisitor::visitReturnStatement(HelloParser::ReturnStatementContext *context) {
+    auto node = std::make_shared<ASTNode>("ReturnStatement");
+    if (context->expr()) {
+        node->addChild(std::any_cast<ASTNodePtr>(visit(context->expr())));
+    }
+    return node;
 }
 
 // ------------------ IfStatement ------------------
@@ -113,9 +130,12 @@ std::any HelloASTVisitor::visitWhileStatement(HelloParser::WhileStatementContext
 // ------------------ DoStatement ------------------
 std::any HelloASTVisitor::visitDoStatement(HelloParser::DoStatementContext *context) {
     auto node = std::make_shared<ASTNode>("DoStatement");
-    node->addChild(std::any_cast<ASTNodePtr>(visit(context->statement())));
-    node->addChild(std::any_cast<ASTNodePtr>(visit(context->expr())));
+
+    node->value = context->children[2]->getText();
+    node->addChild(std::any_cast<ASTNodePtr>(visit(context->statement()))); // body
+    node->addChild(std::any_cast<ASTNodePtr>(visit(context->expr())));      // condition
     return node;
+
 }
 
 // ------------------ ExprStatement ------------------

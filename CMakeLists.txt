@@ -9,6 +9,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(PARSER_DIR ${CMAKE_SOURCE_DIR}/parser)
 set(VISITOR_DIR ${CMAKE_SOURCE_DIR}/visitor)
 set(GRAPH_DIR ${CMAKE_SOURCE_DIR}/calltree)
+set(ASM_DIR ${CMAKE_SOURCE_DIR}/lab3)
+
 
 # === Путь к локальной сборке ANTLR runtime ===
 
@@ -26,6 +28,8 @@ ${PARSER_DIR}/HelloVisitor.cpp
 ${VISITOR_DIR}/HelloASTVisitor.cpp
 ${GRAPH_DIR}/Graph.cpp
 ${GRAPH_DIR}/CFGBuilder.cpp
+${GRAPH_DIR}/CFGBuilder.cpp
+${ASM_DIR}/Reg32CodeGenModule.cpp
 main.cpp
 )
 
@@ -40,6 +44,7 @@ ${PARSER_DIR}
 ${VISITOR_DIR}
 ${ANTLR_RUNTIME_INCLUDE}
 ${GRAPH_DIR}
+${ASM_DIR}
 )
 
 # === Линковка с локальной библиотекой ANTLR runtime ===

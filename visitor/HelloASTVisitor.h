@@ -30,6 +30,8 @@ public:
 
     std::any visitStatement(HelloParser::StatementContext *context) override;
 
+    std::any visitReturnStatement(HelloParser::ReturnStatementContext *context) override;
+
     std::any visitIfStatement(HelloParser::IfStatementContext *context) override;
 
     std::any visitWhileStatement(HelloParser::WhileStatementContext *context) override;

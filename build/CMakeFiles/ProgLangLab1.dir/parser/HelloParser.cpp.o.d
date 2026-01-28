@@ -1,7 +1,7 @@
 CMakeFiles/ProgLangLab1.dir/parser/HelloParser.cpp.o: \
  /home/artem/study/yap/lab1ANTLR/parser/HelloParser.cpp \
  /usr/include/stdc-predef.h \
- /home/artem/study/yap/lab1ANTLR/parser/HelloListener.h \
+ /home/artem/study/yap/lab1ANTLR/parser/HelloVisitor.h \
  /home/artem/antlr4/runtime/src/antlr4-runtime.h \
  /home/artem/antlr4/runtime/src/antlr4-common.h \
  /usr/include/c++/13/algorithm /usr/include/c++/13/bits/stl_algobase.h \
@@ -403,5 +403,4 @@ CMakeFiles/ProgLangLab1.dir/parser/HelloParser.cpp.o: \
  /home/artem/antlr4/runtime/src/tree/xpath/XPathTokenElement.h \
  /home/artem/antlr4/runtime/src/tree/xpath/XPathWildcardAnywhereElement.h \
  /home/artem/antlr4/runtime/src/tree/xpath/XPathWildcardElement.h \
- /home/artem/study/yap/lab1ANTLR/parser/HelloParser.h \
- /home/artem/study/yap/lab1ANTLR/parser/HelloVisitor.h
+ /home/artem/study/yap/lab1ANTLR/parser/HelloParser.h

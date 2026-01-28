@@ -177,6 +177,30 @@ calltree/Graph.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/calltree/Graph.cpp.s
 .PHONY : calltree/Graph.cpp.s
 
+lab3/Reg32CodeGenModule.o: lab3/Reg32CodeGenModule.cpp.o
+.PHONY : lab3/Reg32CodeGenModule.o
+
+# target to build an object file
+lab3/Reg32CodeGenModule.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/lab3/Reg32CodeGenModule.cpp.o
+.PHONY : lab3/Reg32CodeGenModule.cpp.o
+
+lab3/Reg32CodeGenModule.i: lab3/Reg32CodeGenModule.cpp.i
+.PHONY : lab3/Reg32CodeGenModule.i
+
+# target to preprocess a source file
+lab3/Reg32CodeGenModule.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/lab3/Reg32CodeGenModule.cpp.i
+.PHONY : lab3/Reg32CodeGenModule.cpp.i
+
+lab3/Reg32CodeGenModule.s: lab3/Reg32CodeGenModule.cpp.s
+.PHONY : lab3/Reg32CodeGenModule.s
+
+# target to generate assembly for a file
+lab3/Reg32CodeGenModule.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProgLangLab1.dir/build.make CMakeFiles/ProgLangLab1.dir/lab3/Reg32CodeGenModule.cpp.s
+.PHONY : lab3/Reg32CodeGenModule.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -336,6 +360,9 @@ help:
 	@echo "... calltree/Graph.o"
 	@echo "... calltree/Graph.i"
 	@echo "... calltree/Graph.s"
+	@echo "... lab3/Reg32CodeGenModule.o"
+	@echo "... lab3/Reg32CodeGenModule.i"
+	@echo "... lab3/Reg32CodeGenModule.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

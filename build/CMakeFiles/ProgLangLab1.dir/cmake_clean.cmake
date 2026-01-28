@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ProgLangLab1.dir/calltree/CFGBuilder.cpp.o.d"
   "CMakeFiles/ProgLangLab1.dir/calltree/Graph.cpp.o"
   "CMakeFiles/ProgLangLab1.dir/calltree/Graph.cpp.o.d"
+  "CMakeFiles/ProgLangLab1.dir/lab3/Reg32CodeGenModule.cpp.o"
+  "CMakeFiles/ProgLangLab1.dir/lab3/Reg32CodeGenModule.cpp.o.d"
   "CMakeFiles/ProgLangLab1.dir/main.cpp.o"
   "CMakeFiles/ProgLangLab1.dir/main.cpp.o.d"
   "CMakeFiles/ProgLangLab1.dir/parser/HelloBaseVisitor.cpp.o"

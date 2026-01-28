@@ -1,0 +1,63 @@
+digraph calc {
+  rankdir=TB;
+  node [fontname="Courier"];
+
+  n95624159974880 [shape=ellipse, labeljust=l, label="entry"];
+  n95624159975664 [shape=ellipse, labeljust=l, label="exit"];
+  n95624160004432 [shape=box, labeljust=l, label="stmt\ncalc := 0\n expr-tree \lAssign\l  LEFT:\l    Id: calc\l  RIGHT:\l    Literal: 0\l"];
+  n95624160147536 [shape=diamond, labeljust=l, label="if\n[(op == 1)]\n cond-tree \lBinary: ==\l  Id: op\l  Literal: 1\l"];
+  n95624160148032 [shape=rectangle, labeljust=l, label="merge"];
+  n95624160148384 [shape=box, labeljust=l, label="stmt\ncalc := (a + b)\n expr-tree \lAssign\l  LEFT:\l    Id: calc\l  RIGHT:\l    Binary: +\l      Id: a\l      Id: b\l"];
+  n95624160149008 [shape=diamond, labeljust=l, label="if\n[(op == 2)]\n cond-tree \lBinary: ==\l  Id: op\l  Literal: 2\l"];
+  n95624160149504 [shape=rectangle, labeljust=l, label="merge"];
+  n95624160149776 [shape=box, labeljust=l, label="stmt\ncalc := (a - b)\n expr-tree \lAssign\l  LEFT:\l    Id: calc\l  RIGHT:\l    Binary: -\l      Id: a\l      Id: b\l"];
+  n95624160150640 [shape=diamond, labeljust=l, label="if\n[(op == 3)]\n cond-tree \lBinary: ==\l  Id: op\l  Literal: 3\l"];
+  n95624160151136 [shape=rectangle, labeljust=l, label="merge"];
+  n95624160151408 [shape=box, labeljust=l, label="stmt\ncalc := (a * b)\n expr-tree \lAssign\l  LEFT:\l    Id: calc\l  RIGHT:\l    Binary: *\l      Id: a\l      Id: b\l"];
+  n95624160152192 [shape=diamond, labeljust=l, label="if\n[(op == 4)]\n cond-tree \lBinary: ==\l  Id: op\l  Literal: 4\l"];
+  n95624160152688 [shape=rectangle, labeljust=l, label="merge"];
+  n95624160152960 [shape=diamond, labeljust=l, label="if\n[(b == 0)]\n cond-tree \lBinary: ==\l  Id: b\l  Literal: 0\l"];
+  n95624160153456 [shape=rectangle, labeljust=l, label="merge"];
+  n95624160153728 [shape=box, labeljust=l, label="stmt\ncalc := 0\n expr-tree \lAssign\l  LEFT:\l    Id: calc\l  RIGHT:\l    Literal: 0\l"];
+  n95624160154624 [shape=box, labeljust=l, label="stmt\ncalc := (a / b)\n expr-tree \lAssign\l  LEFT:\l    Id: calc\l  RIGHT:\l    Binary: /\l      Id: a\l      Id: b\l"];
+  n95624160155920 [shape=diamond, labeljust=l, label="if\n[(op == 5)]\n cond-tree \lBinary: ==\l  Id: op\l  Literal: 5\l"];
+  n95624160156416 [shape=rectangle, labeljust=l, label="merge"];
+  n95624160156688 [shape=diamond, labeljust=l, label="if\n[(b == 0)]\n cond-tree \lBinary: ==\l  Id: b\l  Literal: 0\l"];
+  n95624160157184 [shape=rectangle, labeljust=l, label="merge"];
+  n95624160157456 [shape=box, labeljust=l, label="stmt\ncalc := 0\n expr-tree \lAssign\l  LEFT:\l    Id: calc\l  RIGHT:\l    Literal: 0\l"];
+  n95624160158128 [shape=box, labeljust=l, label="stmt\ncalc := (a % b)\n expr-tree \lAssign\l  LEFT:\l    Id: calc\l  RIGHT:\l    Binary: %\l      Id: a\l      Id: b\l"];
+  n95624160159024 [shape=box, labeljust=l, label="stmt\ncalc := 0\n expr-tree \lAssign\l  LEFT:\l    Id: calc\l  RIGHT:\l    Literal: 0\l"];
+
+  // Successor edges
+  n95624159974880 -> n95624160004432;
+  n95624160004432 -> n95624160147536;
+  n95624160147536 -> n95624160148384 [label="true"];
+  n95624160147536 -> n95624160149008 [label="false"];
+  n95624160148032 -> n95624159975664;
+  n95624160148384 -> n95624160148032;
+  n95624160149008 -> n95624160149776 [label="true"];
+  n95624160149008 -> n95624160150640 [label="false"];
+  n95624160149504 -> n95624160148032;
+  n95624160149776 -> n95624160149504;
+  n95624160150640 -> n95624160151408 [label="true"];
+  n95624160150640 -> n95624160152192 [label="false"];
+  n95624160151136 -> n95624160149504;
+  n95624160151408 -> n95624160151136;
+  n95624160152192 -> n95624160152960 [label="true"];
+  n95624160152192 -> n95624160155920 [label="false"];
+  n95624160152688 -> n95624160151136;
+  n95624160152960 -> n95624160153728 [label="true"];
+  n95624160152960 -> n95624160154624 [label="false"];
+  n95624160153456 -> n95624160152688;
+  n95624160153728 -> n95624160153456;
+  n95624160154624 -> n95624160153456;
+  n95624160155920 -> n95624160156688 [label="true"];
+  n95624160155920 -> n95624160159024 [label="false"];
+  n95624160156416 -> n95624160152688;
+  n95624160156688 -> n95624160157456 [label="true"];
+  n95624160156688 -> n95624160158128 [label="false"];
+  n95624160157184 -> n95624160156416;
+  n95624160157456 -> n95624160157184;
+  n95624160158128 -> n95624160157184;
+  n95624160159024 -> n95624160156416;
+}

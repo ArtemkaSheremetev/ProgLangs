@@ -39,6 +39,8 @@ public:
 
     virtual std::any visitStatement(HelloParser::StatementContext *context) = 0;
 
+    virtual std::any visitReturnStatement(HelloParser::ReturnStatementContext *context) = 0;
+
     virtual std::any visitIfStatement(HelloParser::IfStatementContext *context) = 0;
 
     virtual std::any visitWhileStatement(HelloParser::WhileStatementContext *context) = 0;

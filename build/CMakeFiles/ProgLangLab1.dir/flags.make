@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/artem/study/yap/lab1ANTLR/parser -I/home/artem/study/yap/lab1ANTLR/visitor -I/home/artem/antlr4/runtime/src -I/home/artem/study/yap/lab1ANTLR/calltree
+CXX_INCLUDES = -I/home/artem/study/yap/lab1ANTLR/parser -I/home/artem/study/yap/lab1ANTLR/visitor -I/home/artem/antlr4/runtime/src -I/home/artem/study/yap/lab1ANTLR/calltree -I/home/artem/study/yap/lab1ANTLR/lab3
 
 CXX_FLAGS = -std=gnu++20 -Wall -Wextra -Wpedantic
 

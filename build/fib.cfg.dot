@@ -1,0 +1,20 @@
+digraph fib {
+  rankdir=TB;
+  node [fontname="Courier"];
+
+  n97325096943872 [shape=ellipse, labeljust=l, label="entry\n    vars    \nr : int\nn : int"];
+  n97325096942144 [shape=ellipse, labeljust=l, label="exit"];
+  n97325096943584 [shape=diamond, labeljust=l, label="if\n[(n < 2)]\n cond-tree \lBinary: <\l  Id: n\l  Literal: 2\l"];
+  n97325096944160 [shape=rectangle, labeljust=l, label="merge"];
+  n97325096947360 [shape=box, labeljust=l, label="stmt\nr := 1\n expr-tree \lAssign\l  LEFT:\l    Id: r\l  RIGHT:\l    Literal: 1\l"];
+  n97325096947648 [shape=box, labeljust=l, label="stmt\nr := (fib((n - 1)) + fib((n - 2)))\n expr-tree \lAssign\l  LEFT:\l    Id: r\l  RIGHT:\l    Binary: +\l      Call: fib\l        Args:\l          Binary: -\l            Id: n\l            Literal: 1\l      Call: fib\l        Args:\l          Binary: -\l            Id: n\l            Literal: 2\l"];
+  n97325096948224 [shape=ellipse, labeljust=l, label="exit"];
+
+  // Successor edges
+  n97325096943872 -> n97325096943584;
+  n97325096943584 -> n97325096947360 [label="true"];
+  n97325096943584 -> n97325096947648 [label="false"];
+  n97325096944160 -> n97325096948224;
+  n97325096947360 -> n97325096944160;
+  n97325096947648 -> n97325096944160;
+}

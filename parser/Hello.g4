@@ -41,11 +41,16 @@ statementBlock
 
 // ---------------- Statements ----------------
 statement
-    : ifStatement
+    : returnStatement
+    | ifStatement
     | whileStatement
     | doStatement
     | statementBlock
     | exprStatement
+    ;
+    
+returnStatement
+    : 'return' expr? ';'
     ;
 
 ifStatement

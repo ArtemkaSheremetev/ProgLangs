@@ -7,56 +7,15 @@ Source
         └── Body
             ├── VAR : var
             ├── VarDeclList
-            │   ├── Identifier : x
-            │   ├── Identifier : y
+            │   ├── Identifier : ch
             │   └── TypeRef
-            │       └── BuiltinType : int
-            ├── VAR : var
-            ├── VarDeclList
-            │   ├── Identifier : flag
-            │   └── TypeRef
-            │       └── BuiltinType : bool
+            │       └── BuiltinType : char
             └── StatementBlock
                 ├── AssignExpr
-                │   ├── Identifier : x
-                │   └── Literal : 10
-                ├── AssignExpr
-                │   ├── Identifier : y
-                │   └── Literal : 20
-                ├── AssignExpr
-                │   ├── Identifier : flag
-                │   └── Literal : true
-                ├── IfStatement
-                │   ├── CompareExpr : <
-                │   │   ├── Identifier : x
-                │   │   └── Identifier : y
-                │   ├── CallExpr
-                │   │   └── Identifier : popa
+                │   ├── Identifier : ch
                 │   └── CallExpr
-                │       └── Identifier : banana
-                ├── CallExpr
-                │   └── Identifier : popa
-                ├── DoStatement
-                │   ├── AssignExpr
-                │   │   ├── Identifier : y
-                │   │   └── BinaryExpr : -
-                │   │       ├── Identifier : y
-                │   │       └── BinaryExpr : /
-                │   │           ├── BinaryExpr : *
-                │   │           │   ├── Literal : 1
-                │   │           │   └── Literal : 2
-                │   │           └── Identifier : x
-                │   └── AssignExpr
-                │       ├── Identifier : x
-                │       └── BinaryExpr : -
-                │           ├── BinaryExpr : +
-                │           │   ├── BinaryExpr : +
-                │           │   │   ├── Literal : 1
-                │           │   │   └── Literal : 3
-                │           │   └── BinaryExpr : /
-                │           │       ├── Literal : 8
-                │           │       └── Literal : 2
-                │           └── Identifier : y
-                └── CompareExpr : ==
-                    ├── Identifier : y
-                    └── Literal : 0
+                │       └── Identifier : readChar
+                └── CallExpr
+                    ├── Identifier : writeChar
+                    └── ExprList
+                        └── Identifier : ch

@@ -1,0 +1,44 @@
+method fib(n: int) : int
+var
+    r : int;
+begin
+    if n < 2 then
+        r := 1;
+    else
+        r := fib(n - 1) + fib(n - 2);
+    return r;
+end;
+
+method main() : int
+var
+    x, num, op : int;
+begin
+    x := 0;
+    while 1 do
+    begin
+        op := readChar();   
+        num := readInt();  
+
+        if op == 'f' then
+            x := fib(num);
+
+        if op == '+' then
+            x := x + num;
+
+        if op == '-' then
+            x := x - num;
+
+        if op == '*' then
+            x := x * num;
+
+        if op == '/' then
+            if num == 0 then
+                x := 0;
+            else
+                x := x / num;
+
+        writeInt(x);
+        writeChar('\n');
+    end;
+    return 0;
+end;

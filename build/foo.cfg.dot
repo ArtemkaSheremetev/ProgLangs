@@ -1,0 +1,25 @@
+digraph foo {
+  rankdir=TB;
+  node [fontname="Courier"];
+
+  n95436481276544 [shape=ellipse, labeljust=l, label="entry\n    vars    \nb : int\na : int"];
+  n95436481270848 [shape=ellipse, labeljust=l, label="exit"];
+  n95436481271184 [shape=box, labeljust=l, label="stmt\na := 10\n expr-tree \lAssign\l  LEFT:\l    Id: a\l  RIGHT:\l    Literal: 10\l"];
+  n95436481272208 [shape=box, labeljust=l, label="stmt\nb := (a + 5)\n expr-tree \lAssign\l  LEFT:\l    Id: b\l  RIGHT:\l    Binary: +\l      Id: a\l      Literal: 5\l"];
+  n95436481272736 [shape=diamond, labeljust=l, label="if\n[(a > b)]\n cond-tree \lBinary: >\l  Id: a\l  Id: b\l"];
+  n95436481273136 [shape=rectangle, labeljust=l, label="merge"];
+  n95436481273408 [shape=box, labeljust=l, label="stmt\nb := (a + 10)\n expr-tree \lAssign\l  LEFT:\l    Id: b\l  RIGHT:\l    Binary: +\l      Id: a\l      Literal: 10\l"];
+  n95436481274000 [shape=box, labeljust=l, label="stmt\nb := (a - 10)\n expr-tree \lAssign\l  LEFT:\l    Id: b\l  RIGHT:\l    Binary: -\l      Id: a\l      Literal: 10\l"];
+  n95436481274560 [shape=box, labeljust=l, label="call inc"];
+
+  // Successor edges
+  n95436481276544 -> n95436481271184;
+  n95436481271184 -> n95436481272208;
+  n95436481272208 -> n95436481272736;
+  n95436481272736 -> n95436481273408 [label="true"];
+  n95436481272736 -> n95436481274000 [label="false"];
+  n95436481273136 -> n95436481270848;
+  n95436481273408 -> n95436481273136;
+  n95436481274000 -> n95436481274560;
+  n95436481274560 -> n95436481273136;
+}

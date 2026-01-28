@@ -2,43 +2,13 @@ digraph main {
   rankdir=TB;
   node [fontname="Courier"];
 
-  n97132079019808 [shape=ellipse, label="entry\n--- vars ---\ny : int\nflag : bool\nx : int"];
-  n97132079362832 [shape=ellipse, label="exit"];
-  n97132079363504 [shape=box, label="block"];
-  n97132079363760 [shape=box, label="stmt\nx := 10"];
-  n97132079364016 [shape=box, label="stmt\ny := 20"];
-  n97132079364304 [shape=box, label="stmt\nflag := true"];
-  n97132079364624 [shape=diamond, label="if\n[(x < y)]"];
-  n97132079364944 [shape=box, label="then"];
-  n97132079365264 [shape=box, label="call popa"];
-  n97132079366128 [shape=box, label="else"];
-  n97132079366416 [shape=box, label="call banana"];
-  n97132079366800 [shape=circle, label="merge"];
-  n97132079367184 [shape=box, label="call popa"];
-  n97132079367472 [shape=hexagon, label="repeat\n[(y == 0)]"];
-  n97132079367792 [shape=box, label="repeat_body"];
-  n97132079368112 [shape=box, label="stmt\ny := (y - ((1 * 2) / x))"];
-  n97132079368432 [shape=box, label="stmt\nx := (((1 + 3) + (8 / 2)) - y)"];
-  n97132079368912 [shape=hexagon, label="repeat_exit"];
+  n104354112746384 [shape=ellipse, labeljust=l, label="entry\n    vars    \nch : char"];
+  n104354112746960 [shape=ellipse, labeljust=l, label="exit"];
+  n104354112744656 [shape=box, labeljust=l, label="stmt\nch := readChar()\n expr-tree \lAssign\l  LEFT:\l    Id: ch\l  RIGHT:\l    Call: readChar\l"];
+  n104354112742928 [shape=box, labeljust=l, label="call writeChar\nch\n expr-tree \lId: ch\l"];
 
   // Successor edges
-  n97132079019808 -> n97132079363504;
-  n97132079363504 -> n97132079363760;
-  n97132079363760 -> n97132079364016;
-  n97132079364016 -> n97132079364304;
-  n97132079364304 -> n97132079364624;
-  n97132079364624 -> n97132079364944 [label="true"];
-  n97132079364624 -> n97132079366128 [label="false"];
-  n97132079364944 -> n97132079365264;
-  n97132079365264 -> n97132079366800;
-  n97132079366128 -> n97132079366416;
-  n97132079366416 -> n97132079366800;
-  n97132079366800 -> n97132079367184;
-  n97132079367184 -> n97132079367472;
-  n97132079367472 -> n97132079367792 [label="body", style="dashed"];
-  n97132079367472 -> n97132079368912 [label="exit", style="dotted"];
-  n97132079367792 -> n97132079368112;
-  n97132079368112 -> n97132079368432;
-  n97132079368432 -> n97132079367472;
-  n97132079368912 -> n97132079362832;
+  n104354112746384 -> n104354112744656;
+  n104354112744656 -> n104354112742928;
+  n104354112742928 -> n104354112746960;
 }

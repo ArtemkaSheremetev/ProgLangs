@@ -5,6 +5,5 @@ digraph CallGraph {
   "main";
 
   // edges
-  "main" -> "banana";
-  "main" -> "popa";
+  "main" -> "writeChar";
 }

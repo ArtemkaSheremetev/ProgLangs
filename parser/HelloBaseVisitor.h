@@ -55,6 +55,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitReturnStatement(HelloParser::ReturnStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitIfStatement(HelloParser::IfStatementContext *ctx) override {
     return visitChildren(ctx);
   }
