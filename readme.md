@@ -44,7 +44,7 @@ mkdir build
 cd build
 cmake ..
 make
-./ProgLang program.txt
+./ProgLang ../program.txt
 ```
 
 Для просмотра графа потока управления (CFG) и деревьев операций выполните:
